@@ -13,10 +13,6 @@ img { border: 2px solid black;
 
 p { display: inline;
     font-size: 1.0rem;
-    font-weight: 600;
+    font-weight: 400;
     line-height: 1.4em;
-    padding: 5px;
-    background: linear-gradient(transparent 0%, #FFD9D7 0%);
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
 }
