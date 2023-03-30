@@ -96,19 +96,40 @@ def generate_text(txt_mean, anlyzd_txt, anlyzd_txt2):
 
 
 #テキストを一行単位に分割する
-def split_text_into_lines(txts):
+def split_text_into_lines(txt):
+    anlyzd_txt = token_analyze(txt)
     splitd_txts = []
     chrs_seq    = ""
+    cnt = 0
 
 
-    for chr in txts:
-        if  (chr == "\r" or chr == "\n"):
-             if chrs_seq != "":
-                splitd_txts.append(chrs_seq)
-                chrs_seq = ""
+    print(anlyzd_txt)
 
-        if  (chr != "\r" and chr != "\n"):
-             chrs_seq += chr
+    for item in anlyzd_txt:
+        cnt += 1
+    else:
+        if cnt == 1:
+           if (item != "\r" and item != "\n" and item != "。" and item != "　" and item != " " and item != "、"):
+               splitd_txts.append(item)
+           return splitd_txts
+
+    for item in anlyzd_txt:
+        if (item != "\r" and item != "\n" and item != "。" and item != "　" and item != " "):
+            chrs_seq = item
+
+        if (item == "\r" or item == "\n" or item == "。" or item == "　" or item == " "):
+            if chrs_seq != "":
+               if    item == "。":
+                     splitd_txts.append(chrs_seq+"。")
+                     chrs_seq = ""
+               else:
+                     splitd_txts.append(chrs_seq)
+                     chrs_seq = ""
+    else:
+         if chrs_seq != "":
+            splitd_txts.append(chrs_seq)
+
+    print(splitd_txts)
 
 
     return splitd_txts
@@ -4815,7 +4836,7 @@ def extract_content(txt):
     rmvd_fnl_prtcl_txt = remove_final_particle(rmvd_emotnl_txt)
     rmvd_1st_cnnct_txt = remove_1st_connect(rmvd_fnl_prtcl_txt)
     rmvd_2nd_cnnct_txt = remove_2nd_connect(rmvd_1st_cnnct_txt)
-    extrctd_cntnt_txt = rmvd_2nd_cnnct_txt
+    extrctd_cntnt_txt  = rmvd_2nd_cnnct_txt
 
     tkns  = token_analyze2(extrctd_cntnt_txt)
 
@@ -4848,6 +4869,7 @@ def extract_content(txt):
        extrctd_cntnt = extract_content_with_jp_ga(tkns)
     if extrctd_cntnt == "主語: 述語: (文型不一致)":
        extrctd_cntnt = extract_content_with_jp_mo(tkns)
+
 
     return extrctd_cntnt, extrctd_cntnt_txt
 
@@ -6107,14 +6129,15 @@ def extract_content_with_jp_ha(tkns):
     sub            = ""
     prdct          = ""
     content        = ""
-    tkn_idx        = 0
+    tkns_idx       = 0
     jp_ha_idx      = 0
     jp_ha_mtch_cnt = 0
 
-    while tkn_idx < len(tkns):
-          if (tkns[tkn_idx][0] == "は" and "助詞" in tkns[tkn_idx][1]):
-              is_mtchs_jp_ha[tkn_idx] = True
-          tkn_idx += 1
+
+    while tkns_idx < len(tkns):
+          if (tkns[tkns_idx][0] == "は" and "助詞" in tkns[tkns_idx][1]):
+              is_mtchs_jp_ha[tkns_idx] = True
+          tkns_idx += 1
     else:
           tkns_idx = 0
 
@@ -6127,6 +6150,9 @@ def extract_content_with_jp_ha(tkns):
         if mtchs_flg == True:
            jp_ha_mtch_cnt += 1
 
+    if len(tkns) < 3:
+       return "主語: 述語: (文型不一致)"
+
     if "名詞" not in tkns[0][1]:
         return "主語: 述語: (文型不一致)"
 
@@ -6136,14 +6162,16 @@ def extract_content_with_jp_ha(tkns):
     if jp_ha_idx == len(tkns)-1:
        return "主語: 述語: (文型不一致)"
 
-    while tkn_idx < jp_mo_idx:
-          if "名詞" in tkns[0][1]:
-             sub = tkns[0][0]
-          tkn_idx += 1
+    while tkns_idx < jp_ha_idx:
+          if "名詞" in tkns[tkns_idx][1]:
+             sub = tkns[tkns_idx][0]
+          tkns_idx += 1
+    else:
+          tkns_idx += 1
 
-    while tkn_idx < len(tkns)-1:
-          prdct += tkns[tkn_idx][0]
-          tkn_idx += 1
+    while tkns_idx < len(tkns):
+          prdct += tkns[tkns_idx][0]
+          tkns_idx += 1
 
     if   (sub == "" or prdct == ""):
           content = "主語: 述語: (文型不一致)"
@@ -6160,15 +6188,15 @@ def extract_content_with_jp_ga(tkns):
     sub            = ""
     prdct          = ""
     content        = ""
-    tkn_idx        = 0
+    tkns_idx       = 0
     jp_ga_idx      = 0
     jp_ga_mtch_cnt = 0
 
 
-    while tkn_idx < len(tkns):
-          if (tkns[tkn_idx][0] == "が" and "助詞" in tkns[tkn_idx][1]):
-              is_mtchs_jp_ga[tkn_idx] = True
-          tkn_idx += 1
+    while tkns_idx < len(tkns):
+          if (tkns[tkns_idx][0] == "が" and "助詞" in tkns[tkns_idx][1]):
+              is_mtchs_jp_ga[tkns_idx] = True
+          tkns_idx += 1
     else:
           tkns_idx = 0
 
@@ -6181,6 +6209,9 @@ def extract_content_with_jp_ga(tkns):
         if mtchs_flg == True:
            jp_ga_mtch_cnt += 1
 
+    if len(tkns) < 3:
+       return "主語: 述語: (文型不一致)"
+
     if "名詞" not in tkns[0][1]:
         return "主語: 述語: (文型不一致)"
 
@@ -6190,14 +6221,16 @@ def extract_content_with_jp_ga(tkns):
     if jp_ga_idx == len(tkns)-1:
        return "主語: 述語: (文型不一致)"
 
-    while tkn_idx < jp_mo_idx:
-          if "名詞" in tkns[0][1]:
-             sub = tkns[0][0]
-          tkn_idx += 1
+    while tkns_idx < jp_mo_idx:
+          if "名詞" in tkns[tkns_idx][1]:
+             sub = tkns[tkns_idx][0]
+          tkns_idx += 1
+    else:
+          tkns_idx += 1
 
-    while tkn_idx < len(tkns)-1:
-          prdct += tkns[tkn_idx][0]
-          tkn_idx += 1
+    while tkns_idx < len(tkns):
+          prdct += tkns[tkns_idx][0]
+          tkns_idx += 1
 
     if   (sub == "" or prdct == ""):
           content = "主語: 述語: (文型不一致)"
@@ -6214,15 +6247,15 @@ def extract_content_with_jp_mo(tkns):
     sub            = ""
     prdct          = ""
     content        = ""
-    tkn_idx        = 0
+    tkns_idx       = 0
     jp_mo_idx      = 0
     jp_mo_mtch_cnt = 0
 
 
-    while tkn_idx < len(tkns):
-          if (tkns[tkn_idx][0] == "も" and "助詞" in tkns[tkn_idx][1]):
-              is_mtchs_jp_mo[tkn_idx] = True
-          tkn_idx += 1
+    while tkns_idx < len(tkns):
+          if (tkns[tkns_idx][0] == "も" and "助詞" in tkns[tkns_idx][1]):
+              is_mtchs_jp_mo[tkns_idx] = True
+          tkns_idx += 1
     else:
           tkns_idx = 0
 
@@ -6235,6 +6268,9 @@ def extract_content_with_jp_mo(tkns):
         if mtchs_flg == True:
            jp_mo_mtch_cnt += 1
 
+    if len(tkns) < 3:
+       return "主語: 述語: (文型不一致)"
+
     if "名詞" not in tkns[0][1]:
         return "主語: 述語: (文型不一致)"
 
@@ -6244,14 +6280,16 @@ def extract_content_with_jp_mo(tkns):
     if jp_mo_idx == len(tkns)-1:
        return "主語: 述語: (文型不一致)"
 
-    while tkn_idx < jp_mo_idx:
-          if "名詞" in tkns[0][1]:
-             sub = tkns[0][0]
-          tkn_idx += 1
+    while tkns_idx < jp_mo_idx:
+          if "名詞" in tkns[tkns_idx][1]:
+             sub = tkns[tkns_idx][0]
+          tkns_idx += 1
+    else:
+          tkns_idx += 1
 
-    while tkn_idx < len(tkns):
-          prdct += tkns[tkn_idx][0]
-          tkn_idx += 1
+    while tkns_idx < len(tkns):
+          prdct += tkns[tkns_idx][0]
+          tkns_idx += 1
 
     if   (sub == "" or prdct == ""):
           content = "主語: 述語: (文型不一致)"
