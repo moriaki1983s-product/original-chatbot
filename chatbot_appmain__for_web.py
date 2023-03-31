@@ -29,12 +29,12 @@ def index():
        gnrtd_txt, txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst, uttrnc_mdl = \
        chatbot_text_generate.generate_text(txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst)
 
-       return render_template("reply.html", reply_txt1=gnrtd_txt, reply_txt2=txt_mean, reply_txt3=anlyzd_tkns1, \
+       return render_template("bot_reply.html", reply_txt1=gnrtd_txt, reply_txt2=txt_mean, reply_txt3=anlyzd_tkns1, \
                                reply_txt4=anlyzd_tkns2, reply_txt5=txt_sntmnt, reply_txt6=txt_djst, reply_txt7=uttrnc_mdl)
 
 
-@app.route("/reply", methods=["GET"])
-def reply():
+@app.route("/bot_reply", methods=["GET"])
+def bot_reply():
 
     if request.method == "GET":
 
