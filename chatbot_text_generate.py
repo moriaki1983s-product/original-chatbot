@@ -10,7 +10,7 @@ import random
 
 
 #返信・返答テキストを生成する。
-def generate_text(txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst):
+def generate_text(txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info):
     uttrnc_mdl = "発話モーダル:実装予定"
 
 
@@ -44,4 +44,4 @@ def generate_text(txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst):
        gnrtd_txt = random.choice(gnrtd_txt_cnddt)
 
 
-    return gnrtd_txt, txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst, uttrnc_mdl
+    return txts, gnrtd_txt, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info, uttrnc_mdl

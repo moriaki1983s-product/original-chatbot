@@ -18,12 +18,14 @@ from janome.tokenizer import Tokenizer
 
 #テキストを解析する
 def analyze_text(txts):
-    txt_mean     = []
-    anlyzd_tkns1 = []
-    anlyzd_tkns2 = []
-    txt_sntmnt   = "テキスト感情:実装予定"
-    txt_djst     = "テキスト要約:実装予定"
-    txts_idx     = 0
+    txt_mean   = []
+    txt_tkns   = []
+    txt_sntmnt = "テキスト感情:実装予定"
+    txt_djst   = "テキスト要約:実装予定"
+    cntxt      = "コンテキスト:実装予定"
+    tpc        = "トピック:実装予定"
+    usr_info   = "ユーザー情報:実装予定"
+    txts_idx   = 0
 
 
     splitd_txts = split_text_into_lines(txts)
@@ -40,8 +42,7 @@ def analyze_text(txts):
                            "無し", "無し", \
                            extrctd_intnt, rmvd_and_short_txt])
 
-             anlyzd_tkns1.append(token_analyze_to_text_out(origin_txt))
-             anlyzd_tkns2.append(token_analyze_to_text_out2(origin_txt))
+             txt_tkns.append(token_analyze_to_text_out(origin_txt))
              txts_idx += 1
              continue
 
@@ -53,8 +54,7 @@ def analyze_text(txts):
                            "無し", "無し", \
                            extrctd_intnt, rmvd_and_short_txt])
 
-             anlyzd_tkns1.append(token_analyze_to_text_out(origin_txt))
-             anlyzd_tkns2.append(token_analyze_to_text_out2(origin_txt))
+             txt_tkns.append(token_analyze_to_text_out(origin_txt))
              txts_idx += 1
              continue
 
@@ -66,8 +66,7 @@ def analyze_text(txts):
                            "無し", "無し", \
                            extrctd_intnt, rmvd_and_short_txt])
 
-             anlyzd_tkns1.append(token_analyze_to_text_out(origin_txt))
-             anlyzd_tkns2.append(token_analyze_to_text_out2(origin_txt))
+             txt_tkns.append(token_analyze_to_text_out(origin_txt))
              txts_idx += 1
              continue
 
@@ -81,11 +80,11 @@ def analyze_text(txts):
                            extrctd_2nd_cnnct, extrctd_2nd_cnnct_txt, \
                            extrctd_intnt, extrctd_intnt_txt])
 
-          anlyzd_tkns1.append(token_analyze_to_text_out(origin_txt))
-          anlyzd_tkns2.append(token_analyze_to_text_out2(origin_txt))
+          txt_tkns.append(token_analyze_to_text_out(origin_txt))
           txts_idx += 1
 
-    return txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst
+
+    return txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info
 
 
 #テキストを一行単位に分割する
@@ -184,23 +183,23 @@ def check_text_terminate_string(txt, pttrn_str):
 #テキストの形態素解析をする(見出し＆表層形のみをリストにして出力する)
 def token_analyze(txts):
     tknzr              = Tokenizer()
-    anlyzd_tkns        = tknzr.tokenize(txts)
-    result_anlyzd_tkns = []
+    txt_tkns        = tknzr.tokenize(txts)
+    result_txt_tkns = []
 
-    for anlyzd_tkn in anlyzd_tkns:
-        result_anlyzd_tkns.append(anlyzd_tkn.surface)
+    for anlyzd_tkn in txt_tkns:
+        result_txt_tkns.append(anlyzd_tkn.surface)
 
 
-    return result_anlyzd_tkns
+    return result_txt_tkns
 
 
 #テキストを形態素解析する(見出し＆表層形と品詞の組をリストにして出力する)
 def token_analyze2(txts):
     tknzr       = Tokenizer()
-    anlyzd_tkns = tknzr.tokenize(txts)
+    txt_tkns = tknzr.tokenize(txts)
     result_tkns = []
 
-    for anlyzd_tkn in anlyzd_tkns:
+    for anlyzd_tkn in txt_tkns:
         result_tkns.append([anlyzd_tkn.surface, anlyzd_tkn.part_of_speech])
 
 
@@ -209,7 +208,7 @@ def token_analyze2(txts):
 
 #テキストを字句解析して結果(＝Janomeによるもの)を出力する
 def token_analyze_to_text_out(txt):
-    anlyzd_tkns = []
+    txt_tkns = []
     anlyzd_txt  = ""
     tkns_idx     = 0
 
@@ -224,10 +223,10 @@ def token_analyze_to_text_out(txt):
     tkns = token_analyze2(extrctd_cntnt_txt)
 
     while tkns_idx < len(tkns):
-          anlyzd_tkns.append("<" + tkns[tkns_idx][0] + " " + tkns[tkns_idx][1] + ">")
+          txt_tkns.append("<" + tkns[tkns_idx][0] + " " + tkns[tkns_idx][1] + ">")
           tkns_idx += 1
 
-    for anlyzd_tkn in anlyzd_tkns:
+    for anlyzd_tkn in txt_tkns:
         anlyzd_txt += anlyzd_tkn
 
     return anlyzd_txt
@@ -235,7 +234,7 @@ def token_analyze_to_text_out(txt):
 
 #テキストを字句解析して結果(＝名詞同士、体言＆用言同士を連結＆連体したもの)を出力する
 def token_analyze_to_text_out2(txt):
-    anlyzd_tkns = []
+    txt_tkns = []
     anlyzd_txt  = ""
     tkns_idx     = 0
 
@@ -258,10 +257,10 @@ def token_analyze_to_text_out2(txt):
     tkns = join_tokens_by_jp_to_as_case_particle_and_jp_ha_as_participant_particle(tkns)
 
     while tkns_idx < len(tkns):
-          anlyzd_tkns.append("<" + tkns[tkns_idx][0] + " " + tkns[tkns_idx][1] + ">")
+          txt_tkns.append("<" + tkns[tkns_idx][0] + " " + tkns[tkns_idx][1] + ">")
           tkns_idx += 1
 
-    for anlyzd_tkn in anlyzd_tkns:
+    for anlyzd_tkn in txt_tkns:
         anlyzd_txt += anlyzd_tkn
 
     return anlyzd_txt
@@ -302,7 +301,7 @@ def remove_and_shortening_symbols(txt):
     rmvd_symbl_txt = re.sub("(\@)", "", rmvd_symbl_txt)
     rmvd_symbl_txt = re.sub("( )",  "", rmvd_symbl_txt)
 
-    rmvd_and_short_txt = re.sub("(！+)", "！", txt)
+    rmvd_and_short_txt = re.sub("(！+)", "！", rmvd_symbl_txt)
     rmvd_and_short_txt = re.sub("(？+)", "？", rmvd_and_short_txt)
     rmvd_and_short_txt = re.sub("(♪+)", "♪", rmvd_and_short_txt)
     rmvd_and_short_txt = re.sub("(～+)", "～", rmvd_and_short_txt)
@@ -897,7 +896,7 @@ def extract_1st_connect(txt):
 
 #テキストの中に含まれる第二のコネクト(＝体言＆用言＋接続助詞等の形)を抽出する
 def extract_2nd_connect(txt):
-    anlyzd_tkns           = []
+    txt_tkns           = []
     anlyzd_txt            = ""
     extrctd_2nd_cnnct     = ""
     extrctd_2nd_cnnct_txt = ""
@@ -2036,10 +2035,10 @@ def extract_2nd_connect(txt):
           extrctd_2nd_cnnct = "不明・その他"
 
           while tkns_idx2 < len(tkns):
-                anlyzd_tkns.append(tkns[tkns_idx2][0])
+                txt_tkns.append(tkns[tkns_idx2][0])
                 tkns_idx2 += 1
 
-          for anlyzd_tkn in anlyzd_tkns:
+          for anlyzd_tkn in txt_tkns:
               anlyzd_txt += anlyzd_tkn
 
           extrctd_2nd_cnnct_txt = anlyzd_txt
@@ -2438,6 +2437,7 @@ def extract_intent_from_short_and_boilerplate_for_child(txt):
 
 #テキストが短文＆定型文だったとして、それらからインテント(＝発話の意図＆種類＆類型)を抽出する(主として、成人や大人に向けられる言葉)
 def extract_intent_from_short_and_boilerplate_for_adlut(txt):
+    print("!!!!!!!!!"+txt)
     if   (txt == "お初にお目にかかります" or
           txt == "初めまして" or
           txt == "はじめまして"):

@@ -25,12 +25,13 @@ def index():
 
     if request.method == "POST":
 
-       txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst = chatbot_text_analyze.analyze_text(request.form["sent_txt"])
-       gnrtd_txt, txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst, uttrnc_mdl = \
-       chatbot_text_generate.generate_text(txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst)
+       txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info = chatbot_text_analyze.analyze_text(request.form["sent_txt"])
+       txts, gnrtd_txt, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info, uttrnc_mdl = \
+       chatbot_text_generate.generate_text(txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info)
 
-       return render_template("bot_reply.html", reply_txt1=gnrtd_txt, reply_txt2=txt_mean, reply_txt3=anlyzd_tkns1, \
-                               reply_txt4=anlyzd_tkns2, reply_txt5=txt_sntmnt, reply_txt6=txt_djst, reply_txt7=uttrnc_mdl)
+       return render_template("bot_reply.html", reply_txt1=txts, reply_txt2=gnrtd_txt, \
+                               reply_txt3=txt_mean, reply_txt4=txt_tkns, reply_txt5=txt_sntmnt, \
+                               reply_txt6=txt_djst, reply_txt7=cntxt, reply_txt8=tpc, reply_txt9=usr_info, reply_txt10=uttrnc_mdl)
 
 
 @app.route("/bot_reply", methods=["GET"])
