@@ -3,12 +3,12 @@ background-color: #32CD32;
 }
 
 .footer {
-background-color: #E4FF8D;
+background-color: #cbe8fa;
 }
 
 
 .init_show_txt {
-color: #0000FF;
+color: black;
 }
 
 .reply_txt1 {
@@ -61,36 +61,53 @@ img {
 position: relative;
 border: 2px solid;
 border-color: black;
-border-radius: 20%;
+border-radius: 50%;
 width:  300px;
 height: 300px;
 }
 
 
-.balloon_user {
+.user_balloon {
 position: absolute;
 top: 360px;
 left: 1080px;
 display: inline-block;
-margin: 8em 0;
+margin:  10em 0;
 padding: 10px 10px;
 min-width: 120px;
-max-width: 100%;
+max-width: 50%;
 color: #555;
 font-size: 16px;
-background: #32CD32;
+background: #8EB8FF;
 border-radius: 15px;
+border: 1px solid;
+border-color: black;
 }
 
-.balloon_bot {
+.bot_balloon {
 position: relative;
+left: 50px;
 display: inline-block;
 margin: 10em 0;
 padding: 7px 10px;
 min-width: 120px;
-max-width: 100%;
+max-width: 50%;
 color: #555;
 font-size: 16px;
-background: white;
+background: #FF97C2;
 border-radius: 15px;
+border: 1px solid;
+border-color: black;
+}
+
+
+.button {
+width: 240px;
+hight: 100px;
+padding: 10px;
+box-sizing: border-box;
+border: 2px solid #68779a;
+border-radius: 5%;
+background: gray;
+cursor: pointer;
 }
