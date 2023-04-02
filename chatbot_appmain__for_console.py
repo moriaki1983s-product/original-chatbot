@@ -10,7 +10,7 @@ import chatbot_text_generate
 
 
 #当該アプリケーションのエントリィポイント
-init_shw_txt = "hello! (original-chatbot)"
+init_shw_txt = ">hello! (original-chatbot)"
 
 print(init_shw_txt)
 
@@ -23,15 +23,17 @@ while True:
 
           break
 
+      origin_txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info = chatbot_text_analyze.analyze_text(inpt_txt)
+      origin_txts, gnrtd_txt, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info, uttrnc_mdl = \
+      chatbot_text_generate.generate_text(origin_txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info)
 
-      txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst = chatbot_text_analyze.analyze_text(inpt_txt)
-      gnrtd_txt, txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst, uttrnc_mdl = \
-      chatbot_text_generate.generate_text(txt_mean, anlyzd_tkns1, anlyzd_tkns2, txt_sntmnt, txt_djst)
-
+      print(origin_txts)
       print(gnrtd_txt)
       print(txt_mean)
-      print(anlyzd_tkns1)
-      print(anlyzd_tkns2)
+      print(txt_tkns)
       print(txt_sntmnt)
       print(txt_djst)
+      print(cntxt)
+      print(tpc)
+      print(usr_info)
       print(uttrnc_mdl)

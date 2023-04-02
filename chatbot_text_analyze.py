@@ -17,7 +17,7 @@ from janome.tokenizer import Tokenizer
 
 
 #テキストを解析する
-def analyze_text(txts):
+def analyze_text(origin_txts):
     txt_mean   = []
     txt_tkns   = []
     txt_sntmnt = "テキスト感情:実装予定"
@@ -28,7 +28,7 @@ def analyze_text(txts):
     txts_idx   = 0
 
 
-    splitd_txts = split_text_into_lines(txts)
+    splitd_txts = split_text_into_lines(origin_txts)
 
     while txts_idx < len(splitd_txts):
           origin_txt         = splitd_txts[txts_idx]
@@ -84,7 +84,7 @@ def analyze_text(txts):
           txts_idx += 1
 
 
-    return txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info
+    return origin_txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info
 
 
 #テキストを一行単位に分割する
