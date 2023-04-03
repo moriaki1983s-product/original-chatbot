@@ -2,6 +2,10 @@
 background-color: #32CD32;
 }
 
+.flash {
+background-color: yellow;
+}
+
 .footer {
 background-color: #cbe8fa;
 }
@@ -9,6 +13,10 @@ background-color: #cbe8fa;
 
 .init_show_txt {
 color: black;
+}
+
+.flash_txt {
+color: red;
 }
 
 .reply_txt1 {

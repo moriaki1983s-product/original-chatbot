@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="header">
-<p id="introduce"><font size="4" color="black">「original-chatbot」  人間との自然な会話を目指したチャットボットです</font></p>
+<h2 id="introduce">「original-chatbot」  人間との自然な会話を目指したチャットボットです</h2>
 </div>
 </br>
 <p class="init_show_txt"><font size="4">>hello! (original-chatbot)</font></p>
@@ -17,6 +17,18 @@
 </br>
 <input type="submit" value="メッセージを送る" class="button">
 </form>
+</br>
+</br>
+</br>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="flash">
+  {% for message in messages %}
+   <p class="flash_txt">{{message}}</p>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
 </br>
 </br>
 </br>

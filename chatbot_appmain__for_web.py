@@ -5,12 +5,13 @@
 
 import chatbot_text_analyze
 import chatbot_text_generate
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect, flash
 
 
 
 
 app = Flask(__name__, static_folder="./templates/images")
+app.config["SECRET_KEY"] = "python_flask_chatbot_appmain"
 
 
 
@@ -24,6 +25,10 @@ def index():
 
 
     if request.method == "POST":
+
+       if request.form["sent_txt"] == "":
+          flash("メッセージが入力されていません！")
+          return redirect(url_for("index"))
 
        origin_txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info = chatbot_text_analyze.analyze_text(request.form["sent_txt"])
        origin_txts, gnrtd_txt, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info, uttrnc_mdl = \
