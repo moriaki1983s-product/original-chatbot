@@ -11,7 +11,7 @@
 <h2 id="introduce">「original-chatbot」  人間との自然な会話を目指したチャットボットです</h2>
 </div>
 </br>
-<p class="init_show_txt"><font size="4">>hello! (original-chatbot)</font></p>
+<p class="init_show_txt">>hello! (original-chatbot)</p>
 <form method="post">
 <textarea name="sent_txt" rows="10" cols="100"></textarea>
 </br>
@@ -22,7 +22,7 @@
 </br>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
-<div class="flash">
+<div class="balloon_flash">
   {% for message in messages %}
    <p class="flash_txt">{{message}}</p>
   {% endfor %}
