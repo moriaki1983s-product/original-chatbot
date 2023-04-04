@@ -136,3 +136,8 @@ border-radius: 5%;
 background: gray;
 cursor: pointer;
 }
+
+.button:hover {
+background: silver;
+cursor: pointer;
+}
