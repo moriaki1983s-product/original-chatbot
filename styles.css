@@ -1,0 +1,151 @@
+.header {
+background-color: #32CD32;
+}
+
+.footer {
+background-color: #cbe8fa;
+}
+
+
+.init_txt {
+color: black;
+}
+
+.flash_txt {
+color: red;
+}
+
+
+body {
+background-color: #75A9FF;
+}
+
+
+.button {
+width: 240px;
+hight: 100px;
+padding: 10px;
+box-sizing: border-box;
+border: 2px solid #68779a;
+border-radius: 5%;
+background: gray;
+}
+
+.button:hover {
+background: silver;
+cursor: pointer;
+}
+
+
+.balloon_flash {
+position: absolute;
+top:  370px;
+left: 10px;
+display: inline-block;
+margin:  10em 0;
+padding: 10px 10px;
+min-width: 120px;
+max-width: 50%;
+color: #555;
+font-size: 16px;
+background-color: yellow;
+border-radius: 15px;
+border: 1px solid;
+border-color: black;
+}
+
+.user_balloon__for_text {
+position: absolute;
+top:  360px;
+left: 1080px;
+display: inline-block;
+margin:  10em 0;
+padding: 10px 10px;
+min-width: 120px;
+max-width: 50%;
+color: #555;
+font-size: 16px;
+background: #8EB8FF;
+border-radius: 15px;
+border: 1px solid;
+border-color: black;
+}
+
+.user_balloon__for_image {
+position: absolute;
+top:  4100px;
+left: 1080px;
+display: inline-block;
+margin:  10em 0;
+padding: 10px 10px;
+text-align: center;
+min-width: 120px;
+max-width: 50%;
+color: #555;
+font-size: 16px;
+background: #8EB8FF;
+border-radius: 15px;
+border: 1px solid;
+border-color: black;
+}
+
+.bot_balloon__for_text {
+position: relative;
+left: 50px;
+display: inline-block;
+margin: 10em 0;
+padding: 10px 10px;
+min-width: 120px;
+max-width: 50%;
+color: #555;
+font-size: 16px;
+background: #FF97C2;
+border-radius: 15px;
+border: 1px solid;
+border-color: black;
+}
+
+.bot_balloon__for_image {
+position: relative;
+left: 50px;
+display: inline-block;
+margin: 10em 0;
+padding: 10px 10px;
+text-align: center;
+min-width: 120px;
+max-width: 50%;
+color: #555;
+font-size: 16px;
+background: #FF97C2;
+border-radius: 15px;
+border: 1px solid;
+border-color: black;
+}
+
+.chracter_image {
+position: relative;
+border: 2px solid;
+border-color: black;
+border-radius: 50%;
+width:  300px;
+height: 300px;
+}
+
+
+.origin_image__sent {
+position: relative;
+border: 0px solid;
+border-color: black;
+border-radius: 0%;
+width:  300px;
+height: 300px;
+}
+
+.analyzed_image {
+position: relative;
+border: 0px solid;
+border-color: black;
+border-radius: 0%;
+width:  300px;
+height: 300px;
+}
