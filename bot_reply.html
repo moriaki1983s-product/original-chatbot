@@ -10,38 +10,27 @@
 </head>
 <body>
 <div class="header">
-<p id="introduce"><font size="4">色んな言葉を投げかけてみてください。その時々で反応が変わりますよ。ちなみに、褒めてあげると喜びます。</font></p>
+<a href="#">ログイン</a>
 </div>
+</br>
+</br>
 <div class="flexbox">
-<div style="position:absolute; top:120px; left:60px">
+<div style="position:absolute; top:240px; left:60px">
 <img class="chracter_image" src="static/bot_image(hina).jpg" alt="bot-image(hina)">
 <p id="bot-name(hina)"><font size="5">ヒナ役(チャットボット)</font></p>
-<div style="position:absolute; top:0px; left:1420px">
+</div>
+<div style="position:absolute; top:240px; left:1420px">
 <img class="chracter_image" src="static/user_image(hodaka).jpg" alt="user-image(hodaka)">
 <p id="user-name(hodaka)"><font size="5">ホダカ役(あなた)</font></p>
 </div>
 </div>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
 <div class="user_balloon__for_text">
 <p>{{origin_texts}}</p>
 </div>
-</br>
-</br>
+</br></br></br></br></br></br></br>
+</br></br></br></br></br></br></br>
+</br></br></br></br></br></br></br>
+</br></br></br></br></br></br></br>
 <div class="bot_balloon__for_text">
 <p>{{generated_texts}}</p>
 </div>
@@ -86,10 +75,11 @@
 </div>
 </br>
 </br>
+</br></br></br></br></br></br></br>
 <div class="user_balloon__for_image">
-{% if original_image_path %}
-<img class="origin_image__sent" src="{{original_image_path}}">
-<p>"{{original_image_path}}"</p>
+{% if origin_image_path %}
+<img class="origin_image__sent" src="{{origin_image_path}}">
+<p>"{{origin_image_path}}"</p>
 {% endif %}
 </div>
 </br>

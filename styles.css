@@ -1,5 +1,10 @@
+@charset "utf-8";
+
+
+
+
 .header {
-background-color: #32CD32;
+text-align: right;
 }
 
 .footer {
@@ -39,8 +44,8 @@ cursor: pointer;
 
 .balloon_flash {
 position: absolute;
-top:  370px;
 left: 10px;
+top:  270px;
 display: inline-block;
 margin:  10em 0;
 padding: 10px 10px;
@@ -56,8 +61,8 @@ border-color: black;
 
 .user_balloon__for_text {
 position: absolute;
-top:  360px;
 left: 1080px;
+top:  560px;
 display: inline-block;
 margin:  10em 0;
 padding: 10px 10px;
@@ -73,10 +78,10 @@ border-color: black;
 
 .user_balloon__for_image {
 position: absolute;
-top:  4100px;
 left: 1080px;
+top:  4780px;
 display: inline-block;
-margin:  10em 0;
+margin: 0 auto;
 padding: 10px 10px;
 text-align: center;
 min-width: 120px;
@@ -109,7 +114,7 @@ border-color: black;
 position: relative;
 left: 50px;
 display: inline-block;
-margin: 10em 0;
+margin: 0 auto;
 padding: 10px 10px;
 text-align: center;
 min-width: 120px;
