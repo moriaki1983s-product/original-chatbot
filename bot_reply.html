@@ -6,7 +6,7 @@
 <meta name="description" content="主にPythonとJanome等を使って実装しています。来年の完成を目指して鋭意製作中です。">
 <title>original-chatbot</title>
 <link rel="shortcut icon" type="image/x-icon" href="{{url_for("static",filename="favicon.ico")}}">
-<link rel="stylesheet" type="text/css" href="{{url_for("static",filename="page_styles.css")}}">
+<link rel="stylesheet" type="text/css" href="{{url_for("static",filename="styles.css")}}">
 </head>
 <body>
 <div class="header">
@@ -14,11 +14,11 @@
 </div>
 <div class="flexbox">
 <div style="position:absolute; top:120px; left:60px">
-<img src="images/bot_image(hina).jpg" alt="bot-image">
-<p id="bot-name"><font size="5">ヒナ(チャットボット)</font></p>
+<img class="chracter_image" src="static/bot_image(hina).jpg" alt="bot-image(hina)">
+<p id="bot-name(hina)"><font size="5">ヒナ役(チャットボット)</font></p>
 <div style="position:absolute; top:0px; left:1420px">
-<img src="images/user_image(hodaka).jpg" alt="user-image">
-<p id="user-name"><font size="5">ホダカ(あなた)</font></p>
+<img class="chracter_image" src="static/user_image(hodaka).jpg" alt="user-image(hodaka)">
+<p id="user-name(hodaka)"><font size="5">ホダカ役(あなた)</font></p>
 </div>
 </div>
 </br>
@@ -37,52 +37,83 @@
 </br>
 </br>
 </br>
-<div class="user_balloon">
-<p class="reply_txt1">{{reply_txt1}}</p>
+<div class="user_balloon__for_text">
+<p>{{origin_texts}}</p>
 </div>
 </br>
 </br>
-<div class="bot_balloon">
-<p class="reply_txt2">{{reply_txt2}}</p>
+<div class="bot_balloon__for_text">
+<p>{{generated_texts}}</p>
 </div>
 </br>
-<div class="bot_balloon">
-<p class="reply_txt3">{{reply_txt3}}</p>
-</div>
-</br>
-</br>
-<div class="bot_balloon">
-<p class="reply_txt4">{{reply_txt4}}</p>
+<div class="bot_balloon__for_text">
+<p>{{text_mean}}</p>
 </div>
 </br>
 </br>
-<div class="bot_balloon">
-<p class="reply_txt5">{{reply_txt5}}</p>
+<div class="bot_balloon__for_text">
+<p>{{text_tokens}}</p>
 </div>
 </br>
 </br>
-<div class="bot_balloon">
-<p class="reply_txt6">{{reply_txt6}}</p>
+<div class="bot_balloon__for_text">
+<p>{{text_sentiment}}</p>
 </div>
 </br>
 </br>
-<div class="bot_balloon">
-<p class="reply_txt7">{{reply_txt7}}</p>
+<div class="bot_balloon__for_text">
+<p>{{text_dijest}}</p>
 </div>
 </br>
 </br>
-<div class="bot_balloon">
-<p class="reply_txt8">{{reply_txt8}}</p>
+<div class="bot_balloon__for_text">
+<p>{{context}}</p>
 </div>
 </br>
 </br>
-<div class="bot_balloon">
-<p class="reply_txt9">{{reply_txt9}}</p>
+<div class="bot_balloon__for_text">
+<p>{{topic}}</p>
 </div>
 </br>
 </br>
-<div class="bot_balloon">
-<p class="reply_txt10">{{reply_txt10}}</p>
+<div class="bot_balloon__for_text">
+<p>{{user_infomation}}</p>
+</div>
+</br>
+</br>
+<div class="bot_balloon__for_text">
+<p>{{utterance_modal}}</p>
+</div>
+</br>
+</br>
+<div class="user_balloon__for_image">
+{% if original_image_path %}
+<img class="origin_image__sent" src="{{original_image_path}}">
+<p>"{{original_image_path}}"</p>
+{% endif %}
+</div>
+</br>
+</br>
+<div class="bot_balloon__for_image">
+{% if analyzed_image_path %}
+<img class="analyzed_image" src="{{analyzed_image_path}}">
+<p>"{{analyzed_image_path}}"</p>
+{% endif %}
+</div>
+</br>
+</br>
+<div class="bot_balloon__for_text">
+<p>{{image_title}}</p>
+</div>
+</br>
+</br>
+<div class="bot_balloon__for_text">
+<p>{{image_description}}</p>
+</div>
+</br>
+</br>
+<div class="bot_balloon__for_text">
+<p>{{learning_results}}</p>
 </div>
 </br>
 </br>
@@ -90,6 +121,7 @@
 <form method="get">
 <input type="submit" value="戻る" class="button">
 </form>
+</br>
 </br>
 </br>
 <div class="footer">
