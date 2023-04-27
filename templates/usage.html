@@ -12,8 +12,8 @@
 <link rel="stylesheet" type="text/css" href="{{url_for("static", filename="bootstrap(popper_bundled)/css/sticky-footer.css")}}">
 </head>
 <body style="background: gray;">
-<div class="header">
-<nav class="navbar navbar-expand-sm navbar-dark bg-success mb-3">
+<header class="header">
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
 <a class="navbar-brand" href="{{url_for("top")}}">original-chatbot</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav4" aria-controls="navbarNav4" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
@@ -30,20 +30,23 @@
 <a class="nav-link" href="{{url_for("about")}}">サイトについて</a>
 </li>
 <li class="nav-item">
+<a class="nav-link" href="{{url_for("signup")}}">サインアップ</a>
+</li>
+<li class="nav-item">
 <a class="nav-link" href="{{url_for("login")}}">ログイン</a>
 </li>
 </ul>
 </div>
 </nav>
-</div>
-</br>
-</br>
-<img src="{{url_for("static", filename="background_image_4.jpg")}}"  alt="background-image-4">
+</header>
+<img src="{{url_for("static", filename="background_image_4.jpg")}}" width="100%" height="100%" alt="background-image-4">
 </br>
 </br>
 </br>
 </br>
-<p class="logout_message">このページでは、アプリの使い方について説明します。</p>
+<center>
+<p>このページでは、アプリの使い方について説明します。</p>
+</center>
 </br>
 </br>
 </br>

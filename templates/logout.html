@@ -3,7 +3,7 @@
 <html lang="ja">
 <head>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 <meta name="description" content="主にPythonとJanome等を使って実装・開発しています。来年の完成を目指して鋭意製作中です。">
 <title>original-chatbot</title>
 <link rel="shortcut icon" type="image/x-icon" href="{{url_for("static", filename="favicon.ico")}}">
@@ -12,8 +12,8 @@
 <link rel="stylesheet" type="text/css" href="{{url_for("static", filename="bootstrap(popper_bundled)/css/sticky-footer.css")}}">
 </head>
 <body style="background: gray;">
-<div class="header">
-<nav class="navbar navbar-expand-sm navbar-dark bg-success mb-3">
+<header class="header">
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
 <a class="navbar-brand" href="{{url_for("top")}}">original-chatbot</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav4" aria-controls="navbarNav4" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
@@ -30,15 +30,23 @@
 <a class="nav-link" href="{{url_for("about")}}">サイトについて</a>
 </li>
 <li class="nav-item">
+<a class="nav-link" href="{{url_for("signup")}}">サインアップ</a>
+</li>
+<li class="nav-item">
 <a class="nav-link" href="{{url_for("login")}}">ログイン</a>
 </li>
 </ul>
 </div>
 </nav>
-</div>
+</header>
+<img src="{{url_for("static", filename="background_image_6.jpg")}}" width="100%" height="100%" alt="background-image-6">
 </br>
 </br>
-<p class="logout_message">ログアウトしました。</p>
+</br>
+</br>
+<center>
+<p class="logout_message_text">ログアウトしました。</p>
+</center>
 </br>
 </br>
 </br>

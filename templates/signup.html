@@ -3,7 +3,7 @@
 <html lang="ja">
 <head>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="主にPythonとJanome等を使って実装しています。来年の完成を目指して鋭意製作中です。">
 <title>original-chatbot</title>
 <link rel="shortcut icon" type="image/x-icon" href="{{url_for("static", filename="favicon.ico")}}">
@@ -46,15 +46,18 @@ font-weight: bold;
 </header>
 <div class="login-form">
 <form method="post">
-<h2 class="text-center">ログイン</h2>
+<h2 class="text-center">サインアップ</h2>
 <div class="form-group">
 <input type="text" class="form-control" placeholder="ユーザー名" required="required" name="username">
+</div>
+<div class="form-group">
+<input type="text" class="form-control" placeholder="メールアドレス" required="required" name="mailaddress">
 </div>
 <div class="form-group">
 <input type="password" class="form-control" placeholder="パスワード" required="required" name="password">
 </div>
 <div class="form-group">
-<button type="submit" class="btn btn-primary btn-block">ログイン</button>
+<button type="submit" class="btn btn-primary btn-block">サインアップ</button>
 </div>
 </form>
 </div>

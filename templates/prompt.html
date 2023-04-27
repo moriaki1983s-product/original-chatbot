@@ -12,9 +12,9 @@
 <link rel="stylesheet" type="text/css" href="{{url_for("static", filename="bootstrap(popper_bundled)/css/sticky-footer.css")}}">
 </head>
 <body style="background: gray;">
-<div class="header">
-<nav class="navbar navbar-expand-sm navbar-dark bg-success mb-3">
-<a class="navbar-brand" href="{{url_for("top")}}">original-chatbot</a>
+<header class="header">
+<nav class="navbar navbar-expand-sm navbar-dark bg-success">
+<a class="navbar-brand" href="{{url_for("logout")}}">original-chatbot</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav4" aria-controls="navbarNav4" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
 </button>
@@ -30,15 +30,19 @@
 <a class="nav-link" href="{{url_for("about")}}">サイトについて</a>
 </li>
 <li class="nav-item">
+<a class="nav-link" href="{{url_for("signup")}}">サインアップ</a>
+</li>
+<li class="nav-item">
 <a class="nav-link" href="{{url_for("logout")}}">ログアウト</a>
 </li>
 </ul>
 </div>
 </nav>
-</div>
+</header>
 </br>
 </br>
 <p class="initial_message_text">>hello!</p>
+</br>
 <form method="post" enctype="multipart/form-data">
 <div class="form-group">
 <input type="text" class="form-control" name="sent_msg_txt" value="ここにメッセージを入力してください">
@@ -48,18 +52,19 @@
 <input type="file" class="form-control" name="sent_msg_img" accept="image/*" multiple>
 </br>
 </br>
+</br>
 <input type="submit" class="btn btn-dark" value="メッセージを送る">
 </div>
 </form>
 </br>
 </br>
+</br>
+</br>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
-<div class="flash_message">
 {% for message in messages %}
-<p class="flash_txt">{{message}}</p>
+<p class="flash_message_text">{{message}}</p>
 {% endfor %}
-</div>
 {% endif %}
 {% endwith %}
 </br>

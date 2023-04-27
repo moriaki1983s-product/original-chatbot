@@ -12,15 +12,15 @@
 <link rel="stylesheet" type="text/css" href="{{url_for("static", filename="bootstrap(popper_bundled)/css/sticky-footer.css")}}">
 </head>
 <body style="background: #75A9FF;">
-<div class="header">
-<nav class="navbar navbar-expand-sm navbar-dark bg-success mb-3">
-<a class="navbar-brand" href="{{url_for("top")}}">original-chatbot</a>
+<header class="header">
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+<a class="navbar-brand" href="{{url_for("logout")}}">original-chatbot</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav4" aria-controls="navbarNav4" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
 </button>
 </div>
 </nav>
-</div>
+</header>
 </br>
 </br>
 <div class="flexbox">
@@ -28,7 +28,7 @@
 <img class="chracter_image" src="static/bot_image(hina).jpg" alt="bot-image(hina)">
 <p id="bot-name(hina)"><font size="5">ヒナ役(チャットボット)</font></p>
 </div>
-<div style="position:absolute; top:200px; left:1420px">
+<div style="position:absolute; top:200px; left:740px">
 <img class="chracter_image" src="static/user_image(hodaka).jpg" alt="user-image(hodaka)">
 <p id="user-name(hodaka)"><font size="5">ホダカ役(あなた)</font></p>
 </div>
@@ -117,7 +117,7 @@
 </br>
 <div class="user_balloon__for_image">
 {% if origin_image_path %}
-<img class="origin_image__sent" src="{{origin_image_path}}">
+<img class="origin_image" src="{{origin_image_path}}">
 <p>"{{origin_image_path}}"</p>
 {% endif %}
 </div>
@@ -154,7 +154,7 @@
 </br>
 <footer class="footer">
 <div class="container text-center">
-<p class="text-muted">ここをクリックすると、ページの先頭に戻ります。</p>
+<p class="text-muted">Copyright &copy; 2023  moriaki1983  All rights reserved.</p>
 </div>
 </footer>
 </br>
