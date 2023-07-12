@@ -11,6 +11,7 @@ import numpy
 import random
 import datetime
 import emoji
+from PIL import Image
 from janome.tokenizer import Tokenizer
 
 
@@ -22,7 +23,7 @@ IMAGE_DIRECTORY = "static/cache_images/"
 
 
 #テキストを解析する
-def analyze_text(origin_txts):
+def analyze_text(txts):
     txt_mean   = []
     txt_tkns   = []
     txt_sntmnt = "テキスト感情:実装予定"
@@ -30,93 +31,113 @@ def analyze_text(origin_txts):
     txts_idx   = 0
 
 
-    splitd_txts = split_text_into_lines(origin_txts)
+    spltd_txts = split_text_into_lines(txts)
 
-    while txts_idx < len(splitd_txts):
-          origin_txt         = splitd_txts[txts_idx]
-          rmvd_and_short_txt = remove_and_shortening_symbols(origin_txt)
+    while txts_idx < len(spltd_txts):
+          orign_txt          = spltd_txts[txts_idx]
+          rmvd_and_short_txt = remove_and_shortening_symbols(orign_txt)
 
           extrctd_intnt = extract_intent_from_gag_and_vocal_cord_copy(rmvd_and_short_txt)
           if extrctd_intnt != "不明・その他":
-             txt_mean.append([origin_txt, \
-                           "無し", rmvd_and_short_txt, \
-                           "無し", "無し", \
-                           "無し", "無し", \
-                           extrctd_intnt, rmvd_and_short_txt])
+             txt_mean.append([orign_txt, \
+                              "無し", rmvd_and_short_txt, \
+                              "無し", "無し", \
+                              "無し", "無し", \
+                              extrctd_intnt, rmvd_and_short_txt])
 
-             txt_tkns.append(token_analyze_to_text_out(origin_txt))
+             txt_tkns.append(token_analyze_to_text_out(orign_txt))
              txts_idx += 1
              continue
 
           extrctd_intnt = extract_intent_from_short_and_boilerplate_for_child(rmvd_and_short_txt)
           if extrctd_intnt != "不明・その他":
-             txt_mean.append([origin_txt, \
-                           "無し", rmvd_and_short_txt, \
-                           "無し", "無し", \
-                           "無し", "無し", \
-                           extrctd_intnt, rmvd_and_short_txt])
+             txt_mean.append([orign_txt, \
+                              "無し", rmvd_and_short_txt, \
+                              "無し", "無し", \
+                              "無し", "無し", \
+                              extrctd_intnt, rmvd_and_short_txt])
 
-             txt_tkns.append(token_analyze_to_text_out(origin_txt))
+             txt_tkns.append(token_analyze_to_text_out(orign_txt))
              txts_idx += 1
              continue
 
           extrctd_intnt = extract_intent_from_short_and_boilerplate_for_adlut(rmvd_and_short_txt)
           if extrctd_intnt != "不明・その他":
-             txt_mean.append([origin_txt, \
-                           "無し", rmvd_and_short_txt, \
-                           "無し", "無し", \
-                           "無し", "無し", \
-                           extrctd_intnt, rmvd_and_short_txt])
+             txt_mean.append([orign_txt, \
+                              "無し", rmvd_and_short_txt, \
+                              "無し", "無し", \
+                              "無し", "無し", \
+                              extrctd_intnt, rmvd_and_short_txt])
 
-             txt_tkns.append(token_analyze_to_text_out(origin_txt))
+             txt_tkns.append(token_analyze_to_text_out(orign_txt))
              txts_idx += 1
              continue
 
-          extrctd_cntnt,     extrctd_cntnt_txt     = extract_content(origin_txt)
-          extrctd_1st_cnnct, extrctd_1st_cnnct_txt = extract_1st_connect(origin_txt)
-          extrctd_2nd_cnnct, extrctd_2nd_cnnct_txt = extract_2nd_connect(origin_txt)
+          extrctd_cntnt,     extrctd_cntnt_txt     = extract_content(rmvd_and_short_txt)
+          extrctd_1st_cnnct, extrctd_1st_cnnct_txt = extract_1st_connect(rmvd_and_short_txt)
+          extrctd_2nd_cnnct, extrctd_2nd_cnnct_txt = extract_2nd_connect(rmvd_and_short_txt)
           extrctd_intnt,     extrctd_intnt_txt     = extract_intent_from_general_text(extrctd_cntnt_txt)
-          txt_mean.append([origin_txt, \
+          txt_mean.append([orign_txt, \
                            extrctd_cntnt, extrctd_cntnt_txt, \
                            extrctd_1st_cnnct, extrctd_1st_cnnct_txt, \
                            extrctd_2nd_cnnct, extrctd_2nd_cnnct_txt, \
                            extrctd_intnt, extrctd_intnt_txt])
 
-          txt_tkns.append(token_analyze_to_text_out(origin_txt))
+          txt_tkns.append(token_analyze_to_text_out(orign_txt))
           txts_idx += 1
 
 
-    return origin_txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst
+    return txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst
 
 
 #テキストを一行単位に分割する
 def split_text_into_lines(txts):
     anlyzd_tkns = token_analyze(txts)
-    splitd_txts = []
+    spltd_txts1 = []
+    spltd_txts2 = []
+    ln_str      = ""
     tkns_cnt    = 0
 
 
     for anlyzd_tkn in anlyzd_tkns:
         tkns_cnt += 1
+
     else:
+
         if tkns_cnt == 1:
            if (anlyzd_tkn != "\r" and anlyzd_tkn != "\n"):
-               splitd_txts.append(anlyzd_tkn)
-           return splitd_txts
+               spltd_txts1.append(anlyzd_tkn)
+
+           return spltd_txts1
 
     for anlyzd_tkn in anlyzd_tkns:
         if (anlyzd_tkn != "\r" and anlyzd_tkn != "\n"):
-            splitd_txts.append(anlyzd_tkn)
+            spltd_txts1.append(anlyzd_tkn)
+
+    for   spltd_tkn in spltd_txts1:
+          if  spltd_tkn != "。":
+              ln_str += spltd_tkn
+
+          else:
+
+              ln_str += "。"
+              spltd_txts2.append(ln_str)
+              ln_str = ""
+
+    else:
+
+          if ln_str != "":
+             spltd_txts2.append(ln_str)
 
 
-    return splitd_txts
+    return spltd_txts2
 
 
 #テキストがゼロ行(＝全くない)かを判定する
 def check_text_not_exist(txts):
-    splitd_txts = split_text_into_lines(txts)
+    spltd_txts = split_text_into_lines(txts)
 
-    if len(splitd_txts) == 0:
+    if len(spltd_txts) == 0:
 
        return True
 
@@ -127,9 +148,9 @@ def check_text_not_exist(txts):
 
 #テキストが単一の行かを判定する
 def check_text_single_line(txts):
-    splitd_txts = split_text_into_lines(txts)
+    spltd_txts = split_text_into_lines(txts)
 
-    if len(splitd_txts) == 1:
+    if len(spltd_txts) == 1:
 
        return True
 
@@ -140,9 +161,9 @@ def check_text_single_line(txts):
 
 #テキストが複数の行かを判定する
 def check_text_multi_line(txt):
-    splitd_txts = split_text_into_lines(txts)
+    spltd_txts = split_text_into_lines(txts)
 
-    if len(splitd_txts) > 1:
+    if len(spltd_txts) > 1:
 
        return True
 
@@ -151,14 +172,14 @@ def check_text_multi_line(txt):
        return False
 
 
-#テキストが指定された文字列で開始するかを判定する
+#テキストが指定の文字列で開始するかを判定する
 def check_text_start_string(txt, pttrn_str):
     is_strt = txt.startswith(pttrn_str)
 
     return is_strt
 
 
-#テキストが指定された文字列で終結するかを判定する(改行コードを終端とする)
+#テキストが指定の文字列で終結するかを判定する(改行コードを終端とする)
 def check_text_terminate_string(txt, pttrn_str):
     is_trmnt = txt.endswith(pttrn_str)
 
@@ -230,9 +251,9 @@ def token_analyze_to_text_out2(txt):
     rmvd_fnl_prtcl_txt = remove_final_particle(rmvd_emotnl_txt)
     rmvd_1st_cnnct_txt = remove_1st_connect(rmvd_fnl_prtcl_txt)
     rmvd_2nd_cnnct_txt = remove_2nd_connect(rmvd_1st_cnnct_txt)
-    extrctd_cntnt_txt = rmvd_2nd_cnnct_txt
+    extrctd_cntnt_txt  = rmvd_2nd_cnnct_txt
 
-    tkns  = token_analyze2(extrctd_cntnt_txt)
+    tkns = token_analyze2(extrctd_cntnt_txt)
 
     tkns = join_tokens_by_noun(tkns)
     tkns = join_tokens_by_noun_between_jp_no(tkns)
@@ -285,14 +306,14 @@ def remove_and_shortening_symbols(txt):
     rmvd_symbl_txt = re.sub("(\#)", "", rmvd_symbl_txt)
     rmvd_symbl_txt = re.sub("(\@)", "", rmvd_symbl_txt)
     rmvd_symbl_txt = re.sub("( )",  "", rmvd_symbl_txt)
+    rmvd_and_short_txt = re.sub(r"(！)+", "", rmvd_symbl_txt)
+    rmvd_and_short_txt = re.sub(r"(？)+", "", rmvd_and_short_txt)
+    rmvd_and_short_txt = re.sub(r"(♪)+", "", rmvd_and_short_txt)
+    rmvd_and_short_txt = re.sub(r"(～)+", "", rmvd_and_short_txt)
+    rmvd_and_short_txt = re.sub(r"(―)+", "", rmvd_and_short_txt)
+    rmvd_and_short_txt = re.sub(r"(\!)+", "", rmvd_and_short_txt)
+    rmvd_and_short_txt = re.sub(r"(\?)+", "", rmvd_and_short_txt)
 
-    rmvd_and_short_txt = re.sub("(！+)", "！", rmvd_symbl_txt)
-    rmvd_and_short_txt = re.sub("(？+)", "？", rmvd_and_short_txt)
-    rmvd_and_short_txt = re.sub("(♪+)", "♪", rmvd_and_short_txt)
-    rmvd_and_short_txt = re.sub("(～+)", "～", rmvd_and_short_txt)
-    rmvd_and_short_txt = re.sub("(―+)", "―", rmvd_and_short_txt)
-    rmvd_and_short_txt = re.sub("(\!+)", "\!", rmvd_and_short_txt)
-    rmvd_and_short_txt = re.sub("(\?+)", "\?", rmvd_and_short_txt)
 
     return rmvd_and_short_txt
 
@@ -305,11 +326,6 @@ def remove_symbols(txt):
     rmvd_symbl_txt = re.sub("(」)", "", rmvd_symbl_txt)
     rmvd_symbl_txt = re.sub("(、)", "", rmvd_symbl_txt)
     rmvd_symbl_txt = re.sub("(。)", "", rmvd_symbl_txt)
-    rmvd_symbl_txt = re.sub("(！)", "", rmvd_symbl_txt)
-    rmvd_symbl_txt = re.sub("(？)", "", rmvd_symbl_txt)
-    rmvd_symbl_txt = re.sub("(♪)", "", rmvd_symbl_txt)
-    rmvd_symbl_txt = re.sub("(―)", "", rmvd_symbl_txt)
-    rmvd_symbl_txt = re.sub("(～)", "", rmvd_symbl_txt)
     rmvd_symbl_txt = re.sub("(・)", "", rmvd_symbl_txt)
     rmvd_symbl_txt = re.sub("(･)", "", rmvd_symbl_txt)
     rmvd_symbl_txt = re.sub("(＆)", "", rmvd_symbl_txt)
@@ -340,12 +356,14 @@ def remove_symbols(txt):
     rmvd_symbl_txt = re.sub("(\/)", "", rmvd_symbl_txt)
     rmvd_symbl_txt = re.sub("( )",  "", rmvd_symbl_txt)
 
+
     return rmvd_symbl_txt
 
 
 #テキストの中に含まれる各種の絵文字を除去する
 def remove_emoji(txt):
     rmvd_emoji_txt = emoji.replace_emoji(txt)
+
 
     return rmvd_emoji_txt
 
@@ -391,6 +409,7 @@ def remove_emotional(txt):
          rmvd_emotnl_txt = re.sub(r"W+$",      "", txt)
     else:
          rmvd_emotnl_txt = txt
+
 
     return rmvd_emotnl_txt
 
@@ -471,6 +490,7 @@ def remove_final_particle(txt):
          rmvd_finl_partcl_txt = re.sub(r"から$",     "", txt)
     else:
          rmvd_finl_partcl_txt = txt
+
 
     return rmvd_finl_partcl_txt
 
@@ -909,6 +929,23 @@ def extract_2nd_connect(txt):
 
 
     while tkns_idx < len(tkns):
+
+          if "すれば" in tkns[tkns_idx][0]:
+
+              itr_end  = tkns_idx
+
+              while tkns_idx2 <= itr_end:
+                    tkns_seq += tkns[tkns_idx2][0]
+                    tkns_idx2 += 1
+              else:
+                    tkns_idx2 = 0
+
+          if tkns_seq != "":
+             extrctd_2nd_cnnct     = "すれば系"
+             extrctd_2nd_cnnct_txt = tkns_seq
+             
+             return extrctd_2nd_cnnct, extrctd_2nd_cnnct_txt
+
 
           if "しては" in tkns[tkns_idx][0]:
 
@@ -3711,6 +3748,7 @@ def extract_intent_from_short_and_boilerplate_for_adlut(txt):
     else:
            extrctd_intnt = "不明・その他"
 
+
     return extrctd_intnt
 
 
@@ -6314,7 +6352,7 @@ def extract_content_with_jp_mo(tkns):
     return content
 
 
-#
+#推測＆推論をする
 def inference_and_speculate(orign_txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, anlyzd_img, img_ttl, img_dscrptn):
     cntxt      = "コンテキスト:実装予定"
     tpc        = "トピック:実装予定"
@@ -6325,7 +6363,7 @@ def inference_and_speculate(orign_txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst
     return cntxt, tpc, usr_info, uttrnc_mdl
 
 
-#
+#自律学習をする
 def learning(orign_txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info, uttrnc_mdl, anlyzd_img_pth, img_ttl, img_dscrptn):
     #return lrnng_rslts   
 
@@ -6333,7 +6371,7 @@ def learning(orign_txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, u
     return "学習結果:実装予定"
 
 
-#
+#返信テキストを生成する
 def generate_text(orign_txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, tpc, usr_info, uttrnc_mdl):
     sntmnt_cnddt = ["JOY", "ANGER", "PITY", "COMFORT", "MIXED", "NEUTRAL"]
     sntmnt = random.choice(sntmnt_cnddt)
@@ -6367,7 +6405,46 @@ def generate_text(orign_txts, txt_mean, txt_tkns, txt_sntmnt, txt_djst, cntxt, t
     return gnrtd_txt
 
 
-#Webフォームのデータストリームから画像を抽出して、元の画像を復元する
+#テキストからテキスト感情を生成する
+def generate_text_sentiment_from_text(txt):
+    txt_sntmnt = ""
+
+
+    return txt_sntmnt
+
+
+#テキストからテキスト要約を生成する
+def generate_text_dijest_from_text(txt):
+    txt_djst = ""
+
+
+    return djst
+
+
+#テキストからユーザー情報を生成する
+def generate_user_information_from_text(txt):
+    usr_info = ""
+
+
+    return usr_info
+
+
+#テキストから発話モーダルを生成する
+def generate_utterance_modal_from_text(txt):
+    uttrnc_mdl = ""
+
+
+    return mdl
+
+
+#ファイルから画像データを抽出して、元の画像を復元する
+def restoration_image_from_imagefile(imgfl_pth):
+
+
+    return cv2.imread(imgfl_pth)
+
+
+#Webフォームのデータストリームから画像データを抽出して、元の画像を復元する
 def restoration_image_from_datastream(dat_strm):
     img_arry   = numpy.asarray(bytearray(dat_strm.read()), dtype=numpy.uint8)
     rstrtn_img = cv2.imdecode(img_arry, 1)
@@ -6376,23 +6453,626 @@ def restoration_image_from_datastream(dat_strm):
     return rstrtn_img
 
 
-#指定された画像を分析する
+#指定の画像を分析する
 def analyze_image(img):
-    anlyzd_img = (img * -1) + 255
-    anlyzd_img = numpy.clip(anlyzd_img, 0, 255).astype(numpy.uint8)
-
     img_ttl     = "画像タイトル:実装予定"
     img_dscrptn = "画像説明:実装予定"
+
+    anlyzd_img = linearize_image(img)
 
 
     return anlyzd_img, img_ttl, img_dscrptn
 
 
-#指定された画像を基に画像ファイルを生成する
-def generate_image_file(img):
+#分析後の画像を基に新たな画像を生成する
+def generate_image(img):
+
+
+    return img
+
+
+#指定の説明文を基に画像を生成する
+def generate_image_by_description(dscrptn):
+    gnrtd_img = []
+
+
+    return gnrtd_img
+
+
+#指定の画像を基に画像ファイルを生成する
+def generate_image_file(img, lbl):
     dt_now = datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
-    gnrtd_img_pth = IMAGE_DIRECTORY + dt_now + ".jpg"
+    gnrtd_img_pth = IMAGE_DIRECTORY + dt_now + lbl + ".jpg"
     cv2.imwrite(gnrtd_img_pth, img)
 
 
     return gnrtd_img_pth
+
+
+#指定の画像の幅と高さと総ピクセル数を取得する
+def retrieve_width_hight_and_pixelcount_in_image(img):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+
+    return img.shape[1], img.shape[0], img.size
+
+
+#指定の画像内の単一ピクセルを変更する
+def change_pixel(img, x, y, colr):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+    img[x, y] = colr
+
+
+#指定の画像内の単一ピクセルを取得する
+def retrieve_pixel(img, x, y):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+
+    return img[x, y]
+
+
+#指定の画像ファイル内の矩形範囲内の複数ピクセルを設定する
+def change_pixel_by_rectangle(img, x1, y1, x2, y2, colr):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+    img[x1:y1, x1:y2] = colr
+
+
+#指定の画像のカラー形式をBGRからRGBに変換する
+def convert_imagecolor_bgr_to_rgb(img):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+
+    cnvrtd_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+
+    return cnvrtd_img
+
+
+#指定の画像のカラー形式をRGBからBGRに変換する
+def convert_imagecolor_rgb_to_bgr(img):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+
+    cnvrtd_img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+
+
+    return cnvrtd_img
+
+
+#BGR形式で特定の色を抽出する関数
+#色相(H):0〜180	本来は0〜360だがOpenCVでは1/2の範囲になる
+#彩度(S):0〜255	値が0に近づくほど白く、255に近づくほどHの色になる
+#明度(V):0〜255	値が0に近づくほど黒く、255に近づくほどHの色になる
+def extract_bgr_color(img, colr_lowr, colr_uppr):
+    img_msk  = cv2.inRange(img, colr_lowr, colr_uppr)
+    mskd_img = cv2.bitwise_and(img, img, img_msk)
+
+
+    return mskd_img
+
+
+#HSV形式で特定の色を抽出する関数
+#色相(H):0〜180	本来は0〜360だがOpenCVでは1/2の範囲になる
+#彩度(S):0〜255	値が0に近づくほど白く、255に近づくほどHの色になる
+#明度(V):0〜255	値が0に近づくほど黒く、255に近づくほどHの色になる
+def extract_hsv_color(img, colr_lowr, colr_uppr):
+    hsv_img  = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    img_msk  = cv2.inRange(hsv_img, colr_lowr, colr_uppr)
+    mskd_img = cv2.bitwise_and(img, img, img_msk)
+
+
+    return mskd_img
+
+
+#指定の画像に対応するレイベルを取得する
+def retrieve_label_corresponding_to_analyzed_image(img):
+    lbl = ""
+
+
+    return lbl
+
+
+#指定の画像に対応するタイトル(＝表題)を取得する
+def retrieve_title_corresponding_to_analyzed_image(img):
+    ttl = ""
+
+
+    return ttl
+
+
+#指定の画像に対応する説明文を取得する
+def retrieve_description_corresponding_to_analyzed_image(img):
+    dscrptn = ""
+
+
+    return dscrptn
+
+
+#指定の画像に対応するセンチメント(＝感情)を取得する
+def retrieve_sentiment_corresponding_to_analyzed_image(img):
+    sntmnt = ""
+
+
+    return sntmnt
+
+
+#指定の２つの画像が同一であるかを検査する
+def check_same_two_images(img1, img2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#指定の２つの画像の内で、幅と高さを基に画像サイズを変更する
+def resize_image_by_width_and_hight(img, width, hight):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+
+    rszd_img = cv2.resize(img,(wdth, hght))
+
+
+    return rszd_img
+
+
+#指定の２つの画像の内で、x,y各方向の倍率を基に画像サイズを変更する
+def resize_image_by_scalex_and_scaley(img, sx, sy):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+
+    rszd_img = cv2.resize(img, None, sx, sy)
+
+
+    return rszd_img
+
+
+#指定の２つの画像の内で、一つ目の画像サイズに合わせて二つ目の画像サイズを変更する
+def resize_image_by_2nd_image(img1, img2):
+    if img1 is None:
+       raise ValueError("img1(object-reference) is none.")
+
+    if img2 is None:
+       raise ValueError("img2(object-reference) is none.")
+
+
+    rszd_image = cv2.resize(img2, img1.shape[1::-1])
+
+
+    return rszd_image
+
+
+#指定の２つの画像をアルファ合成する
+def alphablend_image(img1, img2, blnd_rto):
+    if img1 is None:
+       raise ValueError("img1(object-reference) is none.")
+
+    if img2 is None:
+       raise ValueError("img2(object-reference) is none.")
+
+
+    if   blnd_rto == "5:5":
+         blndd_img = cv2.addWeighted(img1, 0.5, img2, 0.5, 0)
+
+    elif blnd_rto == "7:3":
+         blndd_img = cv2.addWeighted(img1, 0.7, img2, 0.3, 0)
+
+    elif blnd_rto == "3:7":
+         blndd_img = cv2.addWeighted(img1, 0.3, img2, 0.7, 0)
+
+    else:
+         raise ValueError("Invalid blnd_rto(blend-ratio).")
+
+
+    return blndd_img
+
+
+#指定の画像をグレイスケール化する
+def convert_image_to_grayscale(img):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+    cpyd_img = img.copy()
+
+
+    cnvrtd_img = cv2.cvtColor(cpyd_img, cv2.COLOR_BGR2GRAY)
+
+
+    return cnvrtd_img
+
+
+#指定の画像を２値化(＝モノクロ化)する
+def convert_image_to_binary(img):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+    cpyd_img = img.copy()
+
+
+    cnvrtd_img1      = cv2.cvtColor(cpyd_img, cv2.COLOR_BGR2GRAY)
+    ret, cnvrtd_img2 = cv2.threshold(cnvrtd_img1, 100, 255, cv2.THRESH_BINARY)
+
+
+    return cnvrtd_img2
+
+
+#指定の２つの画像を合成する
+def composit_image(img1, img2, cmpst_typ):
+    if img1 is None:
+       raise ValueError("img1(object-reference) is none.")
+
+    if img2 is None:
+       raise ValueError("img2(object-reference) is none.")
+
+
+    if   cmpst_typ == "logical-or":
+         cmpstd_img = cv2.bitwise_or(img1, img2)
+
+    elif cmpst_typ == "logical-and":
+         cmpstd_img = cv2.bitwise_and(img1, img2)
+
+    elif cmpst_typ == "logical-xor":
+         cmpstd_img = cv2.bitwise_xor(img1, img2)
+
+    else:
+         raise ValueError("Invalid cmpst_typ(composit-type).")
+
+
+    return cmpstd_img
+
+
+#指定の画像の色味を反転する
+def invert_imagecolor(img, invrt_typ):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+
+    if   invrt_typ == "logical-not":
+         invrtd_img = cv2.bitwise_not(img)
+
+    elif invrt_typ == "negative-and-positive":
+         invrtd_img = (img * -1) + 255
+         invrtd_img = numpy.clip(invrtd_img, 0, 255).astype(numpy.uint8)
+
+    else:
+         raise ValueError("Invalid invrt_typ(invert-type).")
+
+
+    return invrtd_img
+
+
+#指定の画像に含まれる物体の一部の輪郭(＝最外周)を抽出する
+def extract_only_external_contours_from_image(img, ln_colr):
+    cpyd_img = img.copy()
+
+
+    cnvrtd_img1      = cv2.cvtColor(cpyd_img, cv2.COLOR_BGR2GRAY)
+    ret, cnvrtd_img2 = cv2.threshold(cnvrtd_img1, 100, 255, cv2.THRESH_BINARY)
+    cntrs, _         = cv2.findContours(cnvrtd_img2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    img_cntr         = cv2.drawContours(cpyd_img, cntrs, -1, ln_colr, 1)
+
+
+    return img_cntr
+
+
+#指定の画像に含まれる物体の全ての輪郭を抽出する
+def extract_all_contours_from_image(img, ln_colr):
+    cpyd_img = img.copy()
+
+
+    cnvrtd_img1      = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    ret, cnvrtd_img2 = cv2.threshold(cnvrtd_img1, 100, 255, cv2.THRESH_BINARY)
+    cntrs, _         = cv2.findContours(cnvrtd_img2, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+    img_cntr         = cv2.drawContours(cpyd_img, cntrs, -1, ln_colr, 1)
+
+
+    return img_cntr
+
+
+#指定の画像に各種フィルターを適用する
+def filter_image(img, fltr_typ):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+    cpyd_img = img.copy()
+
+
+    if   fltr_typ == "Box":
+         fltrd_img = cv2.blur(cpyd_img, -1, (5, 5))
+
+    elif fltr_typ == "Median":
+         fltrd_img = cv2.medianBlur(cpyd_img, 3)
+
+    elif fltr_typ == "Bilateral":
+         fltrd_img = cv2.bilateralFilter(cpyd_img, 9, 75, 75)
+
+    elif fltr_typ == "Gaussian":
+         fltrd_img = cv2.GaussianBlur(cpyd_img, (5, 5), 0, 0)
+
+    elif fltr_typ == "Sobel":
+         fltrd_img = cv2.Sobel(cpyd_img, cv2.CV_64F, 1, 0, 3)
+
+    elif fltr_typ == "Laplacian":
+         fltrd_img = cv2.filter2D(cpyd_img, cv2.CV_64F, numpy.array([[1, 1, 1], [1, -8, 1], [1, 1, 1]]))
+
+    elif fltr_typ == "Envoz":
+         fltrd_img = cv2.filter2D(cpyd_img, cv2.CV_64F, numpy.array([[0, -1, 0], [0, 0, 0], [0, 1, 0]]))
+
+    elif fltr_typ == "Previt":
+         fltrd_img = cv2.filter2D(cpyd_img, cv2.CV_64F, numpy.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]]))
+
+    elif fltr_typ == "Sharpen":
+         fltrd_img = cv2.filter2D(cpyd_img, -1, numpy.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]]))
+
+    else:
+         fltrd_img = cpyd_img
+
+
+    return fltrd_img
+
+
+#指定の画像に線形化フィルターを適用する
+def linearize_image(img):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+    cpyd_img = img.copy()
+
+
+    cnvrtd_img1 = convert_image_to_grayscale(cpyd_img)
+    fltrd_img1  = filter_image(cnvrtd_img1, "Sharpen")
+
+    fltrd_img2 = cv2.filter2D(fltrd_img1, -1, numpy.array([[0, 0, 0], [0, 0, 1], [0, 0, 0]]))
+    lnrzd_img  = cv2.filter2D(fltrd_img2, -1, numpy.array([[0, 0, 0], [0, 0, 0], [0, 1, 0]]))
+
+
+    return lnrzd_img
+
+
+#指定の画像にカートゥーン化フィルターを適用する
+def cartoonize_image(img):
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+    cpyd_img = img.copy()
+
+
+    cnvrtd_img1 = convert_image_to_grayscale(cpyd_img)
+    fltrd_img1  = filter_image(cnvrtd_img1, "Sharpen")
+
+    cnvrtd_img2 = convert_image_to_binary(cpyd_img, 100)
+    fltrd_img2  = filter_image(cnvrtd_img2, "Sharpen")
+
+    cmpstd_img  = composit_image(cnvrtd_img1, cnvrtd_img2, "logical-and")
+    cnvrtd_img3 = cv2.cvtColor(cmpstd_img, cv2.COLOR_GRAY2BGR)
+
+    blndd_img   = alphablend_image(cpyd_img, cnvrtd_img3, "7:3")
+    crtnzd_img  = filter_image(blndd_img, "Bilateral")
+
+
+    return crtnzd_img
+
+
+#指定の画像から3Dシェイプ(＝３次元形状)を取得する
+def retrieve_shape3d_corresponding_to_analyzed_image(img):
+    shp3d = []
+
+
+    return shp3d
+
+
+#指定の画像から2Dテクスチャ(＝２次元模様)を取得する
+def retrieve_texture2d_corresponding_to_analyzed_image(img):
+    txtr2d = []
+
+
+    return txtr2d
+
+
+#指定の画像から3Dテクスチャ(＝３次元模様)を取得する
+def retrieve_texture3d_corresponding_to_analyzed_image(img):
+    txtr3d = []
+
+
+    return txtr3d
+
+
+#２つの2Dモデルから2Dムーヴメント(＝２次元動態)を取得する
+def retrieve_movement2d_between_two_2d_model(mdl2d1, mdl2d2):
+    mvmnt2d = []
+
+
+    return mvmnt2d
+
+
+#２つの3Dモデルから3Dムーヴメント(＝３次元動態)を取得する
+def retrieve_movement3d_between_two_3d_model(mdl3d1, mdl3d2):
+    mvmnt3d = []
+
+
+    return mvmnt3d
+
+
+#２つの2Dモデルの形状が同じものかを検査する
+def check_same_two_shape2d(shp2d1, shp2d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの3Dモデルの形状が同じものかを検査する
+def check_same_two_shape3d(shp3d1, shp3d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの2Dモデルのテクスチャが同じものかを検査する
+def check_same_two_texture2d(mdl2d1, mdl2d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの3Dモデルのテクスチャが同じものかを検査する
+def check_same_two_texture3d(mdl3d1, mdl3d2):
+    is_sm  = False
+    smlrty = 0
+    return is_sm, smlrty
+
+
+#２つの2Dモデル(の形状＆模様)が同じものかを検査する
+def check_same_two_model2d(mdl2d1, mdl2d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの3Dモデル(の形状＆模様)が同じものかを検査する
+def check_same_two_model3d(mdl3d1, mdl3d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの2Dムーヴメント(＝２次元動態)が同じものかを検査する
+def check_same_two_movement2d(mvmnt2d1, mvmnt2d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの3Dムーヴメント(＝３次元動態)が同じものかを検査する
+def check_same_two_3d_movement(mvmnt3d1, mvmnt3d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの2Dテクスチャの中間のテクスチャ(＝２次元模様)を生成する
+def generate_texture2d(txtr2d1, txtr2d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの3Dテクスチャの中間のテクスチャ(＝３次元模様)を生成する
+def generate_texture3d(txtr3d1, txtr3d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの2Dシェイプの中間のシェイプ(＝２次元形状)を生成する
+def generate_shape2d(shp2d1, shp2d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの3Dシェイプの中間のシェイプ(＝３次元形状)を生成する
+def generate_shape3d(shp3d1, shp3d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの2Dモデルの中間のテクスチャ(＝２次元模様)を生成する
+def generate_two_texture2d(mdl2d1, mdl2d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの3Dモデルの中間のテクスチャ(＝３次元模様)を生成する
+def generate_two_texture3d(mdl3d1, mdl3d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの2Dモデルの中間のシェイプ(＝２次元形状)を生成する
+def generate_two_model2d(mdl2d1, mdl2d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの3Dモデルの中間のシェイプ(＝３次元形状)を生成する
+def generate_two_model3d(mdl3d1, mdl3d2):
+    is_sm  = False
+    smlrty = 0
+
+
+    return is_sm, smlrty
+
+
+#２つの2Dムーヴメントから中間のムーヴメント(＝２次元動態)を生成する
+def generate_movement2d(mvmnt2d1, mvmnt2d2):
+    mvmnt2d = []
+
+
+    return mvmnt2d
+
+
+#２つの3Dムーヴメントから中間のムーヴメント(＝３次元動態)を生成する
+def generate_movement3d(mvmnt3d1, mvmnt3d2):
+    mvmnt3d = []
+
+
+    return mvmnt3d
+
+
+#ムーヴメント(＝２次元動態)からノーション(＝概念)やコンセプト(＝観念)を生成する
+def generate_notion_and_concept_from_movement2d(mvmnt2d):
+    ntn_and_cncpt = []
+
+
+    return ntn_and_cncpt
+
+
+#ムーヴメント(＝３次元動態)からノーション(＝概念)やコンセプト(＝観念)を生成する
+def generate_notion_and_concept_from_movement3d(mvmnt3d):
+    ntn_and_cncpt = []
+
+
+    return ntn_and_cncpt
+
