@@ -23,12 +23,14 @@ background: black;
 .logout_message_text {
 color: white;
 font-size: 16px;
+text-align: center;
 background: midnightblue;
 }
 
 .flash_message_text {
 color: white;
 font-size: 16px;
+text-align: center;
 background: darkorange;
 }
 
@@ -121,7 +123,7 @@ width:  300px;
 height: 300px;
 }
 
-.analyzed_image {
+.generated_image {
 position: relative;
 border: 0px solid;
 border-color: black;
