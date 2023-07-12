@@ -3,7 +3,7 @@
 <html lang="ja">
 <head>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 <meta name="description" content="主にPythonとJanome等を使って実装・開発しています。来年の完成を目指して鋭意製作中です。">
 <title>original-chatbot</title>
 <link rel="shortcut icon" type="image/x-icon" href="{{url_for("static", filename="favicon.ico")}}">
@@ -32,24 +32,16 @@
 <li class="nav-item">
 <a class="nav-link" href="{{url_for("signup")}}">サインアップ</a>
 </li>
-<li class="nav-item">
-<a class="nav-link" href="{{url_for("signout")}}">サインアウト</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="{{url_for("login")}}">ログイン</a>
-</li>
 </ul>
 </div>
 </nav>
 </header>
-<img src="{{url_for("static", filename="background_image_4.jpg")}}" width="100%" height="100%" alt="background-image-4">
+<img src="{{url_for("static", filename="background_image_11.jpg")}}" width="100%" height="100%" alt="background-image-6">
 </br>
 </br>
 </br>
 </br>
-<center>
-<p>このページでは、アプリの使い方について説明します。</p>
-</center>
+<p class="logout_message_text">BYE BYE!</p>
 </br>
 </br>
 </br>
@@ -64,7 +56,6 @@
 </div>
 </footer>
 <script type="text/javascript" src="{{url_for("static", filename="jquery/jquery-3.6.4.js")}}"></script>
-<script type="text/javascript" src="{{url_for("static", filename="bootstrap(popper_bundled)/js/bootstrap.bundle.js")}}"></script>
 <script type="text/javascript">
 var btn=$('.footer');
 $(window).scroll(function(){if ($(this).scrollTop() > 80){btn.fadeIn();} else {btn.fadeOut();}});

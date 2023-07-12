@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="{{url_for("static", filename="bootstrap(popper_bundled)/css/bootstrap.css")}}">
 <link rel="stylesheet" type="text/css" href="{{url_for("static", filename="bootstrap(popper_bundled)/css/sticky-footer.css")}}">
 </head>
-<body style="background: gray;">
+<body background="{{url_for("static", filename="background_image_8.jpg")}}">
 <header class="header">
 <nav class="navbar navbar-expand-sm navbar-dark bg-success">
 <a class="navbar-brand" href="{{url_for("logout")}}">original-chatbot</a>
@@ -21,16 +21,7 @@
 <div class="collapse navbar-collapse justify-content-end" id="navbarNav4">
 <ul class="navbar-nav">
 <li class="nav-item">
-<a class="nav-link" href="{{url_for("top")}}">トップ<span class="sr-only">(current)</span></a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="{{url_for("usage")}}">使い方</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="{{url_for("about")}}">サイトについて</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="{{url_for("signup")}}">サインアップ</a>
+<a class="nav-link" href="{{url_for("show_users")}}">ユーザー一覧</a>
 </li>
 <li class="nav-item">
 <a class="nav-link" href="{{url_for("logout")}}">ログアウト</a>
@@ -45,11 +36,11 @@
 </br>
 <form method="post" enctype="multipart/form-data">
 <div class="form-group">
-<input type="text" class="form-control" name="sent_msg_txt" value="ここにメッセージを入力してください">
-</div>
+<input type="text" class="form-control" name="sent_msg_txt" required>
 </br>
 </br>
-<input type="file" class="form-control" name="sent_msg_img" accept="image/*" multiple>
+</br>
+<input type="file" class="form-control" name="sent_msg_img" accept="image/*" required>
 </br>
 </br>
 </br>
@@ -60,13 +51,9 @@
 </br>
 </br>
 </br>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}
-<p class="flash_message_text">{{message}}</p>
-{% endfor %}
-{% endif %}
-{% endwith %}
+</br>
+</br>
+</br>
 </br>
 </br>
 </br>
