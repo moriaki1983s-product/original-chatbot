@@ -10,11 +10,11 @@ body {
 }
 
 .footer {
-background-color: #CBE8FA;
+background: #CBE8FA;
 }
 
 
-.initial_message_text {
+.prompt_message_text {
 font-size: 20px;
 color: white;
 background: black;
@@ -27,7 +27,14 @@ text-align: center;
 background: midnightblue;
 }
 
-.flash_message_text {
+.signout_message_text {
+color: white;
+font-size: 16px;
+text-align: center;
+background: midnightblue;
+}
+
+.caution_message_text {
 color: white;
 font-size: 16px;
 text-align: center;
@@ -130,4 +137,9 @@ border-color: black;
 border-radius: 0%;
 width:  300px;
 height: 300px;
+}
+
+
+br {
+visibility: hidden;
 }
