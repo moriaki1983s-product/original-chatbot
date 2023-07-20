@@ -6458,7 +6458,7 @@ def analyze_image(img):
     img_ttl     = "画像タイトル:実装予定"
     img_dscrptn = "画像説明:実装予定"
 
-    anlyzd_img = linearize_image(img)
+    anlyzd_img = draw_face_boxs(img)
 
 
     return anlyzd_img, img_ttl, img_dscrptn
@@ -7075,4 +7075,34 @@ def generate_notion_and_concept_from_movement3d(mvmnt3d):
 
 
     return ntn_and_cncpt
+
+
+
+
+#人物の顔を検出して、顔を囲った枠を描画する
+def draw_face_boxs(img):
+
+    if img is None:
+       raise ValueError("img(object-reference) is none.")
+
+    drwd_img = img.copy()
+
+    gryd_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    cscd = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+
+    if cscd is None:
+       raise IOError("can't read model.")
+
+    hght, wdth = gryd_img.shape
+
+    min_size = (int(hght / 10), int(wdth / 10))
+
+    bxs = cscd.detectMultiScale(gryd_img, minSize=min_size)
+
+    for bx in bxs:
+        cv2.rectangle(drwd_img, bx, (0, 0, 255), 1, cv2.LINE_AA)
+
+
+    return drwd_img
 
